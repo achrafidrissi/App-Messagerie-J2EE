@@ -1,6 +1,7 @@
 package com.appmessagerie.Controller;
 
 import com.appmessagerie.DAO.DAOServices;
+import com.appmessagerie.DAO.HibernateService;
 import com.appmessagerie.Model.Message;
 import com.appmessagerie.Model.Personne;
 import com.appmessagerie.Util.HashUtil;
@@ -22,18 +23,19 @@ public class ConnexionServlet extends HttpServlet {
 
         String motDePasseHache = HashUtil.hashPassword(motDePasse);
 
-        Personne user = DAOServices.authenticate(nom, motDePasseHache);
-
-        List<Message> messages = DAOServices.getUserMessages(user.getIdPersonne());
-        request.setAttribute("messages", messages);
-
+        Personne user = HibernateService.authenticate(nom, motDePasseHache);
 
         if (user != null) {
             HttpSession session = request.getSession();
             session.setAttribute("utilisateur", user);
+
+            List<Message> messages = HibernateService.getUserMessages(user.getIdPersonne());
+            request.setAttribute("messages", messages);
+
             response.sendRedirect("CompteServlet");
+
         } else {
-            request.setAttribute("erreur", "Nom, prénom ou mot de passe incorrect.");
+            request.setAttribute("erreur", "❌ Nom ou mot de passe incorrect.");
             request.getRequestDispatcher("connexion.jsp").forward(request, response);
         }
     }

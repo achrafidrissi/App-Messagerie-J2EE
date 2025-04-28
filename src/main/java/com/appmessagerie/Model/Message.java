@@ -1,7 +1,14 @@
 package com.appmessagerie.Model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "message")
 public class Message {
-    private int idMessage;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idMessage")
+    private int id;
     private int idPersonne;
     private String sujet;
     private String contenu;
@@ -9,8 +16,8 @@ public class Message {
     // Constructeurs
     public Message() {}
 
-    public Message(int idMessage, int idPersonne, String sujet, String contenu) {
-        this.idMessage = idMessage;
+    public Message(int id, int idPersonne, String sujet, String contenu) {
+        this.id = id;
         this.idPersonne = idPersonne;
         this.sujet = sujet;
         this.contenu = contenu;
@@ -18,11 +25,11 @@ public class Message {
 
     // Getters et Setters
     public int getIdMessage() {
-        return idMessage;
+        return id;
     }
 
-    public void setIdMessage(int idMessage) {
-        this.idMessage = idMessage;
+    public void setIdMessage(int id) {
+        this.id = id;
     }
 
     public int getIdPersonne() {

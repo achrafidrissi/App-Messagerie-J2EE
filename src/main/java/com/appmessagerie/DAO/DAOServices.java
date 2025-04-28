@@ -80,7 +80,7 @@ public class DAOServices {
         try (Connection con = DAOUtil.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, idPersonne);
+            ps.setLong(1, idPersonne);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     messages.add(new Message(
@@ -99,28 +99,28 @@ public class DAOServices {
     }
 
     // 5. Récupérer tous les utilisateurs
-    public static List<Personne> getAllPersonnes() {
-        List<Personne> personnes = new ArrayList<>();
-
-        String sql = "SELECT * FROM Personne";
-        try (Connection con = DAOUtil.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                personnes.add(new Personne(
-                        rs.getInt("idPersonne"),
-                        rs.getString("nom"),
-                        rs.getString("prenom"),
-                        rs.getString("motDePasse")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return personnes;
-    }
+//    public static List<Personne> getAllPersonnes() {
+//        List<Personne> personnes = new ArrayList<>();
+//
+//        String sql = "SELECT * FROM Personne";
+//        try (Connection con = DAOUtil.getConnection();
+//             PreparedStatement ps = con.prepareStatement(sql);
+//             ResultSet rs = ps.executeQuery()) {
+//
+//            while (rs.next()) {
+//                personnes.add(new Personne(
+//                        rs.getInt("idPersonne"),
+//                        rs.getString("nom"),
+//                        rs.getString("prenom"),
+//                        rs.getString("motDePasse")
+//                ));
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return personnes;
+//    }
 
     public static Personne authenticate(String nom, String motDePasseHache) {
         String sql = "SELECT * FROM Personne WHERE nom = ? AND motDePasse = ?";
@@ -134,7 +134,6 @@ public class DAOServices {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Personne(
-                            rs.getInt("idPersonne"),
                             rs.getString("nom"),
                             rs.getString("prenom"),
                             rs.getString("motDePasse")
